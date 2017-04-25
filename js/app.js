@@ -57,4 +57,29 @@
   };
 
   // ADD YOUR CODE HERE
+
+
+  var search = $('form');
+  var moviesearch = '';
+  search.submit(function(event){
+    event.preventDefault();
+    moviesearch = $('#search').val();
+    if(moviesearch != ''){
+      $.getJSON('http://omdbapi.com/'+ '?s=' + moviesearch)
+      .done(function(data){
+        var info = data.Search
+        for (var i=0; i<info.length;i++){
+        var movieobj = {};
+        movieobj['id'] = info[i].imdbID;
+        movieobj['poster'] = info[i].Poster;
+        movieobj['title'] = info[i].Title;
+        movieobj['year'] = info[i].Year;
+        movies.push(movieobj);
+        }
+      })
+      moviesearch = '';             // resets the search field
+    }
+    renderMovies();
+  });
+
 })();
